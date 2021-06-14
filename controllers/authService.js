@@ -11,7 +11,6 @@ exports.createOrUpdateuser=async(req,res)=>{
       name,
       picture
     },{}).save();
-    console.log(newUser);
     res.json(newUser);
   }
 }
