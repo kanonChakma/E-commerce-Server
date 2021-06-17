@@ -15,7 +15,7 @@ const userShema=new mongoose.Schema({
     cart:{
         type:Array,
         default: []
-    },
+     },
     address:String,
     wishList:[{
         type:ObjectId,
