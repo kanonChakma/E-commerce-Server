@@ -13,3 +13,5 @@ router.put('/category/:slug',authCheck,adminCheck,update);
 router.delete('/category/:slug',authCheck,adminCheck,remove);
 
 module.exports=router;
+
+

@@ -42,6 +42,7 @@ exports.remove =async(req,res)=>{
         res.json({code:404,message:"failed to delete"});
     }
 }
+
 exports.list =async(req,res)=>{
   try{
       const category= await Category.find({}).sort({createdAt:-1}).exec();
