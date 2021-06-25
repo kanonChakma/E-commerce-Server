@@ -38,8 +38,8 @@ exports.update =async(req,res)=>{
 
 exports.remove =async(req,res)=>{
     try{
-     await Category.findByIdAndDelete({slug:req.params.slug}).exec();
-     res.json({status:200,message:"delete successfull"});
+     const category=await Category.findOneAndDelete({slug:req.params.slug}).exec();
+     res.json(category);
     }catch(err){
         res.json({status:404,message:"failed to delete"});
     }
