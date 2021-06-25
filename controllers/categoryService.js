@@ -3,11 +3,12 @@ const Slugify=require('slugify');
 
 exports.create =async(req,res)=>{
   const {name}=req.body;
+  console.log(name);
  try{
     const category= await new Category({name,slug:Slugify(name)}).save();
     res.json(category);
   }catch(err){
-      res.json({code:403,message:err.message});
+      res.json({status:400,message:err.message});
       console.error(err.message);
    }
 }
@@ -17,9 +18,10 @@ exports.read =async(req,res)=>{
     const category=await Category.find({slug:req.params.slug}).exec();
     res.json(category);
   }catch(err){
-      res.json({code:403,message:"failed to load data"})
+      res.json({status:403,message:"failed to load data"})
   }
 }
+
 exports.update =async(req,res)=>{
     try{
         const {name}=req.body;
@@ -30,16 +32,16 @@ exports.update =async(req,res)=>{
 
         res.json({data:category,message:"update successfull"});
        }catch(err){
-           res.json({code:404,message:"failed to update data"});
+           res.json({status:404,message:"failed to update data"});
        }
 }
 
 exports.remove =async(req,res)=>{
     try{
      await Category.findByIdAndDelete({slug:req.params.slug}).exec();
-     res.json({code:200,message:"delete successfull"});
+     res.json({status:200,message:"delete successfull"});
     }catch(err){
-        res.json({code:404,message:"failed to delete"});
+        res.json({status:404,message:"failed to delete"});
     }
 }
 
@@ -48,7 +50,7 @@ exports.list =async(req,res)=>{
       const category= await Category.find({}).sort({createdAt:-1}).exec();
       res.json(category);
   }catch(err){
-      res.json({code:403,message:"failed to load list"});
+      res.json({status:403,message:"failed to load list"});
   }    
 }
 

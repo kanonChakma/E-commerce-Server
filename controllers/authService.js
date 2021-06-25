@@ -5,14 +5,12 @@ exports.createOrUpdateuser=async(req,res)=>{
    const user= await User.findOneAndUpdate({email},{name:email.split('@')[0],email},{new: true})
   if(user){
     res.json(user);
-    console.log("Updated User",user);
   }else{
     const newUser= await new User({
       email,
       name:email.split('@')[0],
       picture
     },{}).save();
-    console.log("Created User",newUser);
     res.json(newUser);
    }
 }
