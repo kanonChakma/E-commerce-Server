@@ -28,7 +28,7 @@ exports.update =async(req,res)=>{
             {name,slug:Slugify(name)},
             {new: true}).exec();
 
-        res.json({data:category,message:"update successfull"});
+        res.json(category);
        }catch(err){
            res.json({status:404,message:"failed to update data"});
        }
