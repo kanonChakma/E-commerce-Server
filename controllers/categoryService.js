@@ -3,13 +3,11 @@ const Slugify=require('slugify');
 
 exports.create =async(req,res)=>{
   const {name}=req.body;
-  console.log(name);
  try{
     const category= await new Category({name,slug:Slugify(name)}).save();
     res.json(category);
   }catch(err){
       res.json({status:400,message:err.message});
-      console.error(err.message);
    }
 }
 
@@ -47,11 +45,12 @@ exports.remove =async(req,res)=>{
 
 exports.list =async(req,res)=>{
   try{
+      console.log("request find brother")
       const category= await Category.find({}).sort({createdAt:-1}).exec();
       res.json(category);
   }catch(err){
       res.json({status:403,message:"failed to load list"});
-  }    
+    }     
 }
 
 
