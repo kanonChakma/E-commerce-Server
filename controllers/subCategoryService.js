@@ -22,10 +22,10 @@ exports.read =async(req,res)=>{
 
 exports.update =async(req,res)=>{
     try{
-        const {name}=req.body;
+        const {name,parent}=req.body;
         const subUpdate=await subCategory.findOneAndUpdate(
             {slug:req.params.slug},
-            {name,slug:Slugify(name)},
+            {name,parent,slug:Slugify(name)},
             {new: true}).exec();
 
         res.json(subUpdate);

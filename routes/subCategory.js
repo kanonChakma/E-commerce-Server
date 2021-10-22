@@ -6,7 +6,7 @@ const { create,read,list,update,remove} = require("../controllers/subCategorySer
 
 const router=express.Router();
 
-router.get('/categories',list);
+router.get('/subs',list);
 router.post('/sub',authCheck,adminCheck,create);
 router.get('/sub/:slug',read);
 router.put('/sub/:slug',authCheck,adminCheck,update);
