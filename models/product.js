@@ -14,28 +14,28 @@ const productSchema=new mongoose.Schema({
         unique:true,
         lowercase:true,
         index:true,
-    },
+       },
     description:{
         type:String,
         required:true,
         maxlength:2000,
         text:true,
-    },
+        },
     price:{
         type:number,
         required:true,
         trim:true,
         maxlength:32
-    },
+       },
     category:{
         type:ObjectId,
         ref:"Category",
-    },
+        },
     subs:[{
        type:ObjectId,
        ref:"sub" 
-    },
-  ],
+      },
+    ],
   quantity:Number,
   sold:{
      type:Number,
@@ -55,17 +55,17 @@ const productSchema=new mongoose.Schema({
   brand:{
       type:String,
       enum:["Apple","Samsung","Microsoft","Lenovo","Asus"],
-  },
-  ratings:[
-      {
-        star:Number,
-        postedBy:{
-            type:ObjectId,
-            ref:"User",
-        }
-     }
-  ]
+   },
+//   ratings:[
+//       {
+//         star:Number,
+//         postedBy:{
+//             type:ObjectId,
+//             ref:"User",
+//         }
+//      },
+//   ]
 },
- {timestamps:true}
+{timestamps:true}
 )
 module.exports=mongoose.model("Product",productSchema);
