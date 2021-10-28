@@ -1,4 +1,5 @@
 const Category=require('../models/category');
+const SubCategory=require('../models/subCategory');
 const Slugify=require('slugify');
 
 exports.create =async(req,res)=>{
@@ -52,5 +53,10 @@ exports.list =async(req,res)=>{
       res.json({status:403,message:"failed to load list"});
     }     
 }
-
-
+//--------------------For SubCategories------------------
+exports.getSubs =async(req,res)=>{
+    SubCategory.find({parent:req.params._id}).exec((err,subs)=>{
+        if(err) console.log(err);
+        res.json(subs);
+    })
+}
