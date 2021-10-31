@@ -13,7 +13,7 @@ const productSchema=new mongoose.Schema({
         type:String,
         unique:true,
         lowercase:true,
-        index:true,
+        index:true, 
        },
     description:{
         type:String,
@@ -33,7 +33,7 @@ const productSchema=new mongoose.Schema({
         },
     subs:[{
        type:ObjectId,
-       ref:"sub" 
+       ref:"Sub" 
       },
     ],
   quantity:Number,

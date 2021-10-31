@@ -12,9 +12,14 @@ exports.create= async(req,res)=>{
      }
  }
  
- exports.read= async(req,res)=>{
+ exports.listAll= async(req,res)=>{
     try{
-        const newProduct= await new Product.find({});
+        const newProduct= await Product.find({})
+        .limit(parseInt(req.params.count))
+        .populate("category")
+        .populate("subs")
+        .sort([["createdAt","desc"]])
+        .exec();
         res.json(newProduct);
         }catch(err){
            res.status(400).json({err:err.message});
