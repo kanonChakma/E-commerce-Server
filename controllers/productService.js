@@ -11,6 +11,7 @@ exports.create= async(req,res)=>{
         res.status(400).json({err:err.message});
      }
  }
+ 
  exports.read= async(req,res)=>{
     try{
         const newProduct= await new Product.find({});

@@ -23,7 +23,7 @@ try{
 }
 
 //Middleware
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '5mb'}));
 app.use(morgan("dev"));
 app.use(cors());
 
