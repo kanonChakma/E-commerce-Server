@@ -23,5 +23,16 @@ exports.create= async(req,res)=>{
         res.json(newProduct);
         }catch(err){
            res.status(400).json({err:err.message});
-        }
+      }
+ }
+ exports.remove=async(req,res)=>{
+  try{
+      const deleted=await Product.findOneAndRemove({
+         slug:req.params.slug
+      }).exec();
+      res.json(deleted);
+   }catch(err){
+      console.log(err);
+      return res.status(400).send("Product deleted failed");
+    }
  }
