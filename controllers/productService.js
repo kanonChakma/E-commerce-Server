@@ -3,7 +3,6 @@ const Slugify=require('slugify');
 
 exports.create= async(req,res)=>{
     try{
-     console.log(req.body);
      req.body.slug=Slugify(req.body.title);
      const newProduct= await new Product(req.body).save();
      res.json(newProduct);
@@ -34,5 +33,5 @@ exports.create= async(req,res)=>{
    }catch(err){
       console.log(err);
       return res.status(400).send("Product deleted failed");
-    }
+     }
  }

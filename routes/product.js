@@ -8,6 +8,6 @@ const router=express.Router();
 
 router.post('/product',authCheck,adminCheck,create);
 router.get('/products/:count',listAll);
-router.get('/products/:slug', authCheck,adminCheck,remove);
+router.delete('/product/:slug', authCheck,adminCheck,remove);
 
 module.exports=router;
