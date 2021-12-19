@@ -10,7 +10,6 @@ exports.create= async(req,res)=>{
         res.status(400).json({err:err.message});
      }
  }
- 
  exports.listAll= async(req,res)=>{
     try{
         const newProduct= await Product.find({})
@@ -24,6 +23,7 @@ exports.create= async(req,res)=>{
            res.status(400).json({err:err.message});
       }
  }
+
  exports.remove=async(req,res)=>{
   try{
       const deleted=await Product.findOneAndRemove({
@@ -35,3 +35,11 @@ exports.create= async(req,res)=>{
       return res.status(400).send("Product deleted failed");
      }
  }
+ exports.read=async(req,res)=>{
+     let product= await Product.findOne({slug:req.params.slug})
+    .populate('category')
+    .populate('subs')
+    .exec();
+    res.json(product)
+ }
+
