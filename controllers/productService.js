@@ -1,5 +1,6 @@
 const Product=require("../models/product");
 const Slugify=require('slugify');
+const { default: slugify } = require("slugify");
 
 exports.create= async(req,res)=>{
     try{
@@ -10,6 +11,7 @@ exports.create= async(req,res)=>{
         res.status(400).json({err:err.message});
      }
  }
+
  exports.listAll= async(req,res)=>{
     try{
         const newProduct= await Product.find({})
@@ -35,6 +37,7 @@ exports.create= async(req,res)=>{
       return res.status(400).send("Product deleted failed");
      }
  }
+
  exports.read=async(req,res)=>{
      let product= await Product.findOne({slug:req.params.slug})
     .populate('category')
@@ -42,4 +45,27 @@ exports.create= async(req,res)=>{
     .exec();
     res.json(product)
  }
+
+ exports.update=async(req,res)=>{
+   try{
+      //it will update slug
+      // if(req.body.title){
+      //    req.body.slug=Slugify(req.body.title);
+      // }
+      const updated=await Product.findOneAndUpdate(
+         {slug:req.body.slug},
+          req.body,
+         {new:true}  //For returning updated data
+      ).exec();
+      res.json(updated);
+   }catch(err){
+      res.status(400).json({
+         err:err.message,
+      })
+   }
+}
+
+
+
+
 
