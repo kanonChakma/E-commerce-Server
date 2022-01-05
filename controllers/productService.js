@@ -82,5 +82,14 @@ exports.list=async(req,res)=>{
    }
 }
 
-
+exports.totalProduct=async(req,res)=>{
+  try{
+     const total=await Product.find({})
+     .estimatedDocumentCount()
+     .exec()
+     res.json(total);
+  }catch(err){
+     console.log(err)
+  }
+}
 
