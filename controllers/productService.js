@@ -1,6 +1,7 @@
 const Product=require("../models/product");
 const Slugify=require('slugify');
 const { default: slugify } = require("slugify");
+const product = require("../models/product");
 
 exports.create= async(req,res)=>{
     try{
@@ -64,24 +65,45 @@ exports.create= async(req,res)=>{
       })
    }
 }
+//-------------WITH OUT PAGINATION-------
+// exports.list=async(req,res)=>{
+//    try{
+//       const {sort,order,limit}=req.body;
+//       const products=await Product.find({})
+//       .populate('category')
+//       .populate('subs')
+//       .sort([[sort,order]])
+//       .limit(limit)
+//       .exec()
 
+//       res.json(products);
+
+//    }catch(err){
+//      console.log(err);
+//    }
+// }
+//WITH PAGINATION
 exports.list=async(req,res)=>{
    try{
-      const {sort,order,limit}=req.body;
+       console.log(req.body)
+      const {sort,order,page}=req.body;
+      const currentPage=page||1;
+      const perPage=3;
+
       const products=await Product.find({})
+      .skip((currentPage-1)*perPage)
       .populate('category')
       .populate('subs')
       .sort([[sort,order]])
-      .limit(limit)
+      .limit(page)
       .exec()
-
+      console.table(products)
       res.json(products);
 
    }catch(err){
-     console.log(err);
+     console.table(err);
    }
 }
-
 exports.totalProduct=async(req,res)=>{
   try{
      const total=await Product.find({})
