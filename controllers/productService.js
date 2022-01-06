@@ -1,4 +1,6 @@
 const Product=require("../models/product");
+const User= require("../models/user");
+
 const Slugify=require('slugify');
 const { default: slugify } = require("slugify");
 const product = require("../models/product");
@@ -65,6 +67,7 @@ exports.create= async(req,res)=>{
       })
    }
 }
+
 //-------------WITH OUT PAGINATION-------
 // exports.list=async(req,res)=>{
 //    try{
@@ -75,14 +78,13 @@ exports.create= async(req,res)=>{
 //       .sort([[sort,order]])
 //       .limit(limit)
 //       .exec()
-
 //       res.json(products);
-
 //    }catch(err){
 //      console.log(err);
 //    }
 // }
-//WITH PAGINATION
+
+//---------WITH PAGINATION-------
 exports.list=async(req,res)=>{
    try{
        console.log(req.body)
@@ -102,6 +104,7 @@ exports.list=async(req,res)=>{
      console.table(err);
    }
 }
+
 exports.totalProduct=async(req,res)=>{
   try{
      const total=await Product.find({})
@@ -110,6 +113,40 @@ exports.totalProduct=async(req,res)=>{
      res.json(total);
   }catch(err){
      console.log(err)
-  }
+   }
 }
 
+exports.productRating=async(req,res)=>{     
+    
+  try{
+       const product=Product.findById(req.params.productId)
+       const user=User.findOne({email:req.user})
+       const {star}=req.body;
+
+       const matchRatting=product.ratings.find((r)=>(
+          r.postedBy.toString() === user._id.toString()
+       ))
+       if(matchRatting === undefined){
+            const addRating=Product.findByIdAndUpdate(
+               product._id,
+             {
+                $push: { ratings:{star,postedBy:user._id}}
+              },
+            {new:true}  
+            ).exec();
+            res.json(addRating);
+       }else{
+         const updateRatting=Product.updateOne(
+            {
+               ratings:{$element:matchRatting},
+            },
+            {
+             $set:{"ratings.$.star":star}
+            }
+         ).exec() 
+         res.json(updateRatting)    
+       }
+  }catch(err){
+    console.log(err);
+   }
+}
