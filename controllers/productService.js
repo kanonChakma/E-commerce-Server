@@ -116,18 +116,19 @@ exports.totalProduct=async(req,res)=>{
    }
 }
 
-exports.productRating=async(req,res)=>{     
+exports.starProduct=async(req,res)=>{     
     
   try{
-       const product=Product.findById(req.params.productId)
-       const user=User.findOne({email:req.user})
+       const product=await Product.findById(req.params.productId).exec();
+       const user=await User.findOne({email:req.user.email}).exec();
        const {star}=req.body;
-
+       
        const matchRatting=product.ratings.find((r)=>(
           r.postedBy.toString() === user._id.toString()
        ))
+
        if(matchRatting === undefined){
-            const addRating=Product.findByIdAndUpdate(
+            const addRating= await Product.findByIdAndUpdate(
                product._id,
              {
                 $push: { ratings:{star,postedBy:user._id}}
@@ -136,9 +137,9 @@ exports.productRating=async(req,res)=>{
             ).exec();
             res.json(addRating);
        }else{
-         const updateRatting=Product.updateOne(
+         const updateRatting= await Product.updateOne(
             {
-               ratings:{$element:matchRatting},
+              ratings:{$elemMatch:matchRatting},
             },
             {
              $set:{"ratings.$.star":star}
@@ -147,6 +148,6 @@ exports.productRating=async(req,res)=>{
          res.json(updateRatting)    
        }
   }catch(err){
-    console.log(err);
+     console.log(err);
    }
 }

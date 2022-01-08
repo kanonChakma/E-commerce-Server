@@ -2,7 +2,7 @@ const express=require("express");
 
 
 const{authCheck,adminCheck}=require("../middleware/authCheck");
-const{update,create,listAll,remove,read,list,totalProduct}=require("../controllers/productService");
+const{update,create,listAll,remove,read,list,totalProduct, starProduct}=require("../controllers/productService");
 
 const router=express.Router();
 
@@ -15,5 +15,5 @@ router.get('/product/:slug',read);
 router.put('/product/:slug',authCheck,adminCheck,update);
 router.post('/products',list);
 
-
+router.put('/product/star/:productId',authCheck,starProduct);
 module.exports=router;
