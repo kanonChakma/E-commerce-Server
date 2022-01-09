@@ -2,7 +2,7 @@ const express=require("express");
 
 
 const{authCheck,adminCheck}=require("../middleware/authCheck");
-const{update,create,listAll,remove,read,list,totalProduct, starProduct}=require("../controllers/productService");
+const{update,create,listAll,remove,read,list,totalProduct, starProduct, listRelated}=require("../controllers/productService");
 
 const router=express.Router();
 
@@ -14,6 +14,8 @@ router.delete('/product/:slug', authCheck,adminCheck,remove);
 router.get('/product/:slug',read);
 router.put('/product/:slug',authCheck,adminCheck,update);
 router.post('/products',list);
-
+//for ratting
 router.put('/product/star/:productId',authCheck,starProduct);
+//for related Product
+router.get('/product/related/:productId',listRelated)
 module.exports=router;
