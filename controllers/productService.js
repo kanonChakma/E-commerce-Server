@@ -83,7 +83,6 @@ exports.create= async(req,res)=>{
 //      console.log(err);
 //    }
 // }
-
 //---------WITH PAGINATION-------
 exports.list=async(req,res)=>{
    try{

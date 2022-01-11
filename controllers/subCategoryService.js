@@ -1,5 +1,6 @@
 const subCategory=require('../models/subCategory');
 const Slugify=require('slugify');
+const Product = require('../models/product');
 
 exports.create =async(req,res)=>{
   const {name,parent}=req.body;
@@ -13,8 +14,15 @@ exports.create =async(req,res)=>{
 
 exports.read =async(req,res)=>{
   try{
-    const subRead=await subCategory.find({slug:req.params.slug}).exec();
-    res.json(subRead);
+    const subs=await subCategory.findOne({slug:req.params.slug}).exec();
+    const product=await Product.find({subs:subs})
+    .populate('category')
+    .exec()
+
+    res.json({
+      subs,
+      product
+    });
   }catch(err){
       res.json({status:403,message:"failed to load data"})
    }
