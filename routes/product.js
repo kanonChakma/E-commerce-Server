@@ -2,7 +2,7 @@ const express=require("express");
 
 
 const{authCheck,adminCheck}=require("../middleware/authCheck");
-const{update,create,listAll,remove,read,list,totalProduct, starProduct, listRelated}=require("../controllers/productService");
+const{searchFilters,update,create,listAll,remove,read,list,totalProduct, starProduct, listRelated}=require("../controllers/productService");
 
 const router=express.Router();
 
@@ -21,4 +21,6 @@ router.put('/product/star/:productId',authCheck,starProduct);
 //------for related Product----
 router.get('/product/related/:productId',listRelated)
 
+//for searching
+router.post('/search/filters',searchFilters)
 module.exports=router;
