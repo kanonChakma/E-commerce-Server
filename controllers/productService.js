@@ -229,11 +229,20 @@ const handleStar=async(req,res,stars)=>{
     });
 }
 
-exports.searchFilters=async(req,res)=>{
-   const{query,price,category,star}=req.body;
-   if(star){
-      await handleStar(req,res,star)
+const handleSub=async(req,res,sub)=>{
+   try{
+      const produts=await Product.find({subs:sub})
+      .populate('category','_id name')
+      .populate('subs','_id name')
+      .populate('postedBy',"_id name")
+      .exec()
+      res.json(produts);
+   }catch(err){
+      console.log(err);
    }
+}
+exports.searchFilters=async(req,res)=>{
+   const{query,price,category,star,sub}=req.body;
    if(query){
       await handleQuery(req,res,query)
    }
@@ -242,5 +251,11 @@ exports.searchFilters=async(req,res)=>{
     }
    if(category){
      await hadnleCategory(req,res,category)  
+   }
+   if(star){
+      await handleStar(req,res,star)
+   }
+   if(sub){
+      await handleSub(req,res,sub)
    }
 }
