@@ -170,13 +170,48 @@ const handleQuery=async(req,res,query)=>{
   .populate('category','_id name')
   .populate('subs','_id name')
   .exec()
-  console.log(product);
   res.json(product);
 }
+//search with price range
+const handlePrice=async(req,res,price)=>{
+  try{
+   const product=await Product.find({
+      price:{
+         $gte:price[0],
+         $lte:price[1]
+      },
+   })
+  .populate('category','_id name')
+  .populate('subs','_id name')
+  .populate('postedBy',"_id name")
+  .exec()
+   res.json(product);
+  }catch(err){
+     console.log(err);
+  }
+}
+const hadnleCategory=async(req,res,category)=>{
+   try{
+      const produts=Product.find({category})
+      .populate('category','_id name')
+      .populate('subs','_id name')
+      .populate('postedBy',"_id name")
+      .exec()
+      res.json(produts);
+   }catch(err){
+      console.log(err);
+   }
+}
 exports.searchFilters=async(req,res)=>{
-   const{query}=req.body;
+   const{query,price,category}=req.body;
    console.log(query);
    if(query){
       await handleQuery(req,res,query)
+   }
+   if(price !== undefined){
+      await handlePrice(req,res,price)  
+    }
+   if(category){
+     await hadnleCategory(req,res,category)  
    }
 }
