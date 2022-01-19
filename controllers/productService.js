@@ -5,6 +5,7 @@ const Slugify=require('slugify');
 const { default: slugify } = require("slugify");
 const product = require("../models/product");
 
+
 exports.create= async(req,res)=>{
     try{
      req.body.slug=Slugify(req.body.title);
@@ -192,7 +193,7 @@ const handlePrice=async(req,res,price)=>{
 }
 const hadnleCategory=async(req,res,category)=>{
    try{
-      const produts=Product.find({category})
+      const produts=await Product.find({category})
       .populate('category','_id name')
       .populate('subs','_id name')
       .populate('postedBy',"_id name")
@@ -202,9 +203,37 @@ const hadnleCategory=async(req,res,category)=>{
       console.log(err);
    }
 }
+const handleStar=async(req,res,stars)=>{
+    Product.aggregate([
+       {
+         $project:{
+           document:"$$ROOT",
+           floorAverage:{
+              $floor: {$avg:"$ratings.star"} 
+            },
+          },
+       },
+       {$match: {floorAverage: stars}}
+    ])
+    .limit(12)
+    .exec((err,aggregates)=>{
+       if(err) console.log(err);
+       Product.find({_id:aggregates})
+      .populate('category','_id name')
+      .populate('subs','_id name')
+      .populate('postedBy',"_id name")
+      .exec((err,products)=>{
+         if(err) console.log("PRODUCT AGGEREGATE Error",err);
+         res.json(products);
+       });
+    });
+}
+
 exports.searchFilters=async(req,res)=>{
-   const{query,price,category}=req.body;
-   console.log(query);
+   const{query,price,category,star}=req.body;
+   if(star){
+      await handleStar(req,res,star)
+   }
    if(query){
       await handleQuery(req,res,query)
    }
