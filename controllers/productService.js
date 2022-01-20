@@ -3,7 +3,7 @@ const User= require("../models/user");
 
 const Slugify=require('slugify');
 const { default: slugify } = require("slugify");
-const product = require("../models/product");
+
 
 
 exports.create= async(req,res)=>{
