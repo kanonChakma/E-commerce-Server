@@ -228,7 +228,6 @@ const handleStar=async(req,res,stars)=>{
        });
     });
 }
-
 const handleSub=async(req,res,sub)=>{
    try{
       const produts=await Product.find({subs:sub})
@@ -241,8 +240,32 @@ const handleSub=async(req,res,sub)=>{
       console.log(err);
    }
 }
+const handleShiping=async(req,res,shipping)=>{
+   const produts=await Product.find({shipping})
+   .populate('category','_id name')
+   .populate('subs','_id name')
+   .populate('postedBy',"_id name")
+   .exec()
+   res.json(produts);
+}
+const handleBrand=async(req,res,brand)=>{
+   const produts=await Product.find({brand})
+   .populate('category','_id name')
+   .populate('subs','_id name')
+   .populate('postedBy',"_id name")
+   .exec()
+   res.json(produts);
+}
+const handleColor=async(req,res,color)=>{
+   const produts=await Product.find({color})
+   .populate('category','_id name')
+   .populate('subs','_id name')
+   .populate('postedBy',"_id name")
+   .exec()
+   res.json(produts);
+}
 exports.searchFilters=async(req,res)=>{
-   const{query,price,category,star,sub}=req.body;
+   const{query,price,category,star,sub,shipping,brand,color}=req.body;
    if(query){
       await handleQuery(req,res,query)
    }
@@ -257,5 +280,14 @@ exports.searchFilters=async(req,res)=>{
    }
    if(sub){
       await handleSub(req,res,sub)
+   }
+   if(shipping){
+      await handleShiping(req,res,shipping)
+   }
+   if(brand){
+      await handleBrand(req,res,brand)
+   }
+   if(color){
+      await handleColor(req,res,color)
    }
 }
