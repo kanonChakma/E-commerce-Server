@@ -1,6 +1,7 @@
 const Coupon=require('../models/coupon');
 
 exports.create =async(req,res)=>{
+    console.log(req.body);
   const {name,expiry,discount}=req.body;
  try{
     res.json( await new Coupon({name,expiry,discount}).save());
@@ -11,7 +12,7 @@ exports.create =async(req,res)=>{
 
 exports.remove =async(req,res)=>{
     try{
-     res.json(await Coupon.findOneAndDelete({slug:req.params.couponId}).exec());
+     res.json(await Coupon.findByIdAndRemove(req.params.couponId).exec());
     }catch(err){
         res.json({status:404,message:"failed to delete"});
     }

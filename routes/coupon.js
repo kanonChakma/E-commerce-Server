@@ -5,9 +5,11 @@ const { authCheck } = require("../middleware/authCheck");
 const router=express.Router();
 
 
-// router.post("/coupon",authCheck,create);
-// router.get("/coupons",list);
-// router.delete("/coupon/:couponId",authCheck,remove);
+router.post("/coupon",authCheck,create);
+
+router.get("/coupons",list);
+
+router.delete("/coupon/:couponId",authCheck,remove);
 
 
 module.exports=router;
