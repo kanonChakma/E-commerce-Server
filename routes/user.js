@@ -10,5 +10,5 @@ router.get("/user/cart",authCheck,userGetCart);
 router.delete("/user/cart",authCheck,removeCart);
 router.post("/user/address",authCheck,saveAdress);
 
-router.post("/user/cart/coupon",authCheck,applyCoupon)
+router.post("/user/cart/coupon",authCheck,applyCoupon);
 module.exports=router;

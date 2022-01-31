@@ -1,0 +1,19 @@
+const Product=require("../models/product");
+const User=require("../models/user");
+const Cart=require("../models/cart");
+const Coupon=require("../models/coupon");
+const Stripe=require("stripe")(process.env.STRIPE_SECRET)
+
+exports.createPaymentIntent=async(req,res)=>{
+ try{
+    const paymentIntent=await Stripe.paymentIntents.create({
+        amount:100,
+        currency:"usd"
+    })
+    res.send({
+        clientSecret:paymentIntent.client_secret
+    })
+ }catch(err){
+   console.log(err);
+   }
+}
