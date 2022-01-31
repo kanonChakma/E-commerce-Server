@@ -63,7 +63,6 @@ exports.userCart=async(req,res)=>{
 
 exports.applyCoupon=async(req,res)=>{
   const {coupon}=req.body;
-  console.log(coupon);
 
   const validCoupon=await Coupon.findOne({name:coupon}).exec();
 
