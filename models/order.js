@@ -16,7 +16,7 @@ const orderSchema =new mongoose.Schema(
      paymentIntents:{},
      orderStatus:{
          type:String,
-         default:"No Processed",
+         default:"Not Processed",
          enum:[
              "Not Processed",
              "Processing",
@@ -32,4 +32,5 @@ const orderSchema =new mongoose.Schema(
    },
    {timestamps:true}
 )
-module.exports=mongoose.model("Cart", orderSchema);
+
+module.exports=mongoose.model("Orders", orderSchema);

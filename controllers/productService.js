@@ -112,7 +112,7 @@ exports.totalProduct=async(req,res)=>{
      .exec()
      res.json(total);
   }catch(err){
-     console.log(err)
+     console.log(err);
    }
 }
 
@@ -130,7 +130,7 @@ exports.starProduct=async(req,res)=>{
        if(matchRatting === undefined){
             const addRating= await Product.findByIdAndUpdate(
                product._id,
-             {
+              {
                 $push: { ratings:{star,postedBy:user._id}}
               },
             {new:true}  
