@@ -3,6 +3,32 @@ const User=require("../models/user");
 const Cart=require("../models/cart");
 const Coupon=require("../models/coupon");
 const Order = require("../models/order");
+const { v4: uuidv4 } = require('uuid');
+ 
+exports.addWhishList=async(req,res)=>{
+   const{productId}=req.body;
+   const user=await User.findOneAndUpdate(
+      {email:req.user.email},
+      {$addToSet:{wishList: productId}}).exec();
+   res.json({ok:true});
+}
+
+exports.getWhisList=async(req,res)=>{
+   const list=await User.findOne({email:req.user.email})
+   .select("wishList")
+   .populate("wishList")
+   .exec()
+    res.json(list);                
+  }
+
+  exports.updateWhisList=async(req,res)=>{
+     const{productId}=req.params;
+   const user=await User.findOneAndUpdate(
+      {email:req.user.email},
+      {$pull:{wishList:productId}}
+      ).exec()
+   res.json({ok:true});
+}
 
 exports.getOrder=async(req,res)=>{
    const user=await User.findOne({email:req.user.email})
@@ -11,6 +37,7 @@ exports.getOrder=async(req,res)=>{
    .exec();
    res.json(products);
 }
+
 exports.createOrder=async(req,res)=>{
   try{
    const{paymentIntent}=req.body;
@@ -37,6 +64,40 @@ exports.createOrder=async(req,res)=>{
        console.log(err)
       }             
   }
+//for cashPayment
+exports.addCashpayment=async(req,res)=>{
+   try{
+    const{cashOn}=req.body;
+    const user=await User.findOne({email:req.user.email})
+    const userCart=await Cart.findOne({orderedBy:user._id}).exec();
+    
+    let newOrder=await new Order({
+        products:userCart.products,
+        paymentIntent:{
+          id:uuidv4(),
+          amount: userCart.cartTotal,
+          currency:"used",
+          status:"Cash On Delivery",
+          created: Date.now(),
+          payment_method:["cash"]
+        },
+        orderedBy:user._id
+     }).save()
+     
+     let bulkOption=products.map((item)=>{
+        return {
+           updateOne:{
+              filter:{_id:item.product._id},
+              update:{$inc: {quantity:-item.count, sold:+item.count}}
+           }
+        }
+     });
+     let updated=await Product.bulkWrite(bulkOption,{});
+     res.json({status:"ok"})   
+    }catch(err){
+        console.log(err)
+       }             
+   }
 exports.saveAdress=async(req,res)=>{
  try{
    const {address}= req.body;
