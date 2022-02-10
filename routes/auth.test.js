@@ -6,7 +6,7 @@ jest.mock('express',()=>({
     Router:()=>({get:jest.fn(),post:jest.fn(),put:jest.fn()})
 }))
 
-describe("/auth/post",()=>{
+describe("/authentication",()=>{
     it("should find create-or-update-user",()=>{
         expect(authRoutes.post).toHaveBeenCalledTimes(3);
         expect(authRoutes.post).toHaveBeenCalledWith(
