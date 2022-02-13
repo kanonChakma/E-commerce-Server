@@ -1,4 +1,4 @@
-const Cloudnary=require("./cloudnary");
+const Cloudnary=require("../routes/cloudnary");
 const{authCheck,adminCheck}=require("../middleware/authCheck");
 const{upload,remove}=require("../controllers/cloudnaryService");
 

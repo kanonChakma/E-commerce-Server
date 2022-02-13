@@ -1,4 +1,4 @@
-const Product=require("./product");
+const Product=require("../routes/product");
 
 const{authCheck,adminCheck}=require("../middleware/authCheck");
 const{searchFilters,update,create,listAll,remove,read,list,totalProduct, starProduct, listRelated}=require("../controllers/productService");

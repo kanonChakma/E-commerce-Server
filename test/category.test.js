@@ -1,4 +1,4 @@
-const Category=require("./category");
+const Category=require("../routes/category");
 const { authCheck,adminCheck } = require("../middleware/authCheck");
 const { create,read,list,update,remove,getSubs} = require("../controllers/categoryService");
 

@@ -1,4 +1,4 @@
-const Coupon=require("./coupon");
+const Coupon=require("../routes/coupon");
 const { create,remove,list} = require("../controllers/coupon");
 const { authCheck } = require("../middleware/authCheck");
 

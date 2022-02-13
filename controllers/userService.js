@@ -40,14 +40,16 @@ exports.getOrder=async(req,res)=>{
 
 exports.createOrder=async(req,res)=>{
   try{
-   const{paymentIntent}=req.body;
+   const{paymentIntent,address}=req.body;
+   console.log(address);
    const user=await User.findOne({email:req.user.email})
    const {products}=await Cart.findOne({orderedBy:user._id}).exec();
    
    let newOrder=await new Order({
        products,
        paymentIntent,
-       orderedBy:user._id
+       orderedBy:user._id,
+       orderAddress:address
     }).save()
     
     let bulkOption=products.map((item)=>{
@@ -58,7 +60,7 @@ exports.createOrder=async(req,res)=>{
           }
        }
     });
-    let updated=await Product.bulkWrite(bulkOption,{});
+   await Product.bulkWrite(bulkOption,{});
     res.json({status:"ok"})   
    }catch(err){
        console.log(err)
@@ -67,21 +69,32 @@ exports.createOrder=async(req,res)=>{
 //for cashPayment
 exports.addCashpayment=async(req,res)=>{
    try{
-    const{cashOn}=req.body;
+    const{coupon,cashOn,address}=req.body;
+
     const user=await User.findOne({email:req.user.email})
     const userCart=await Cart.findOne({orderedBy:user._id}).exec();
-    
-    let newOrder=await new Order({
+     
+    let paymentTotal=0;
+    if(coupon && userCart.totalAfterDiscount){
+      paymentTotal=userCart.totalAfterDiscount*100;
+    }
+    else{
+        paymentTotal=userCart.cartTotal*100;
+    }
+
+      await new Order({
         products:userCart.products,
         paymentIntent:{
           id:uuidv4(),
-          amount: userCart.cartTotal,
+          amount: paymentTotal,
           currency:"used",
           status:"Cash On Delivery",
           created: Date.now(),
           payment_method:["cash"]
         },
-        orderedBy:user._id
+        orderStatus:"Cash On Delivery",
+        orderedBy:user._id,
+        orderAddress:address
      }).save()
      
      let bulkOption=products.map((item)=>{
@@ -92,10 +105,10 @@ exports.addCashpayment=async(req,res)=>{
            }
         }
      });
-     let updated=await Product.bulkWrite(bulkOption,{});
-     res.json({status:"ok"})   
+    const product= await Product.bulkWrite(bulkOption,{});
+     res.json(product);   
     }catch(err){
-        console.log(err)
+         res.json({err:err.messeage});   
        }             
    }
 exports.saveAdress=async(req,res)=>{

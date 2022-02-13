@@ -1,4 +1,4 @@
-const authRoutes=require("./auth")
+const authRoutes=require("../routes/auth")
 const { createOrUpdateuser,currentUser } = require("../controllers/authService");
 const { authCheck, adminCheck } = require("../middleware/authCheck");
 
