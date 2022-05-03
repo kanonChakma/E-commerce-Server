@@ -23,16 +23,16 @@ try{
 }
 
 //Middleware
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '5mb'}));
 app.use(morgan("dev"));
 app.use(cors());
 
 //Routes Middleware
 readdirSync("./routes").map((r)=>app.use('/api',require("./routes/"+ r)));
+
 //port
 const port=process.env.PORT ||8000;
 app.listen(port,()=>{
  console.log(`app is running in this ${port}`);
-
 })
 

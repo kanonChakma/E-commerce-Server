@@ -21,8 +21,9 @@ const userShema=new mongoose.Schema({
         type:ObjectId,
         ref:"Product"
     }],
-},
+ },
 {timestamps: true}
 );
+
 module.exports=mongoose.model("User",userShema);
 
