@@ -1,4 +1,4 @@
-exports.userInfo=(req,res)=>{
+exports.userInfo=(req,res) => {
   res.json({
       data:"userHas many profile",
    })

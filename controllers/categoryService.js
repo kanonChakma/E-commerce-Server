@@ -1,7 +1,7 @@
 const Category=require('../models/category');
 const Slugify=require('slugify');
 
-exports.create =async(req,res)=>{
+exports.create =async(req,res) => {
   const {name}=req.body;
   console.log(name);
  try{
@@ -22,7 +22,7 @@ exports.read =async(req,res)=>{
   }
 }
 
-exports.update =async(req,res)=>{
+exports.update =async(req,res) => {
     try{
         const {name}=req.body;
         const category=await Category.findOneAndUpdate(
@@ -36,7 +36,7 @@ exports.update =async(req,res)=>{
        }
 }
 
-exports.remove =async(req,res)=>{
+exports.remove =async(req,res) => {
     try{
      const category=await Category.findOneAndDelete({slug:req.params.slug}).exec();
      res.json(category);
@@ -45,13 +45,13 @@ exports.remove =async(req,res)=>{
     }
 }
 
-exports.list =async(req,res)=>{
+exports.list =async(req,res) => {
   try{
       const category= await Category.find({}).sort({createdAt:-1}).exec();
       res.json(category);
   }catch(err){
       res.json({status:403,message:"failed to load list"});
-  }    
+   }    
 }
 
 
